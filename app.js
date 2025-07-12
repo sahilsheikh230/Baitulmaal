@@ -101,7 +101,9 @@ app.use(async (req, res, next) => {
 });
 
 
-
+app.get("/",(req,res)=>{
+  res.redirect("/home");
+})
 
 // Root
 app.get('/home', (req, res) => {
