@@ -1,0 +1,271 @@
+<% layout('/layouts/boilerplate.ejs') -%>
+
+<div class="container my-5">
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="mb-4 text-success">Register Your Baitulmaal</h3>
+    <form method="POST" action="/home/register" enctype="multipart/form-data" id="baitulmaalForm">
+  <!-- Organisation Name -->
+  <div class="mb-3">
+    <label class="form-label">Organisation Name</label>
+    <input type="text" class="form-control" name="Baitulmaal[name]" required>
+  </div>
+
+  <!-- Email -->
+  <div class="mb-3">
+    <label class="form-label">Email Address</label>
+    <div class="input-group">
+      <input type="email" class="form-control" name="Baitulmaal[email]" id="emailInput" required>
+      <button type="button" class="btn btn-outline-secondary" onclick="sendEmailOTP()">Send OTP</button>
+    </div>
+    <small class="text-success" id="emailOtpStatus"></small>
+  </div>
+
+  <!-- Email OTP -->
+  <div class="mb-3" id="otpBox" style="display: none;">
+    <label class="form-label">Enter Email OTP</label>
+    <input type="text" class="form-control" id="emailOtpInput" placeholder="Enter 6-digit OTP">
+  </div>
+
+  <!-- Address -->
+  <div class="mb-3">
+    <label class="form-label">Full Address</label>
+    <textarea class="form-control" name="Baitulmaal[address]" required></textarea>
+  </div>
+
+  <!-- Aadhaar Upload -->
+  <div class="mb-3">
+    <label class="form-label">Upload Aadhaar Card</label>
+    <input type="file" name="aadhaarCard" id="aadhaarCard" class="form-control" required accept=".pdf,image/*">
+  </div>
+
+  <!-- Live with Aadhaar Photo -->
+  <div class="mb-3">
+    <label class="form-label">Live Photo with Aadhaar</label>
+    <div id="cameraContainer" class="mb-2" style="display: none;">
+      <video id="webcam" autoplay playsinline class="border rounded w-100" style="height: 360px;"></video>
+      <canvas id="canvas" style="display: none;"></canvas>
+      <img id="capturedImage" class="img-fluid mt-2" style="display: none;" />
+    </div>
+    <input type="hidden"  name="Baitulmaal[liveWithAadhaarData]" id="liveWithAadhaarData">
+    <div class="d-flex gap-2 mt-2">
+      <button type="button" class="btn btn-outline-primary" onclick="startWebcam()">Start</button>
+      <button type="button" class="btn btn-success" onclick="capturePhoto()">Capture</button>
+      <button type="button" class="btn btn-danger" onclick="stopWebcam()">Stop</button>
+    </div>
+  </div>
+
+  <!-- Phone Verification -->
+  <div class="mb-3">
+    <label class="form-label">Phone</label>
+    <div class="input-group">
+      <input type="text" class="form-control" name="Baitulmaal[phone]" id="phoneNumber" required pattern="[0-9]{10}">
+      <button type="button" class="btn btn-outline-secondary" onclick="sendOTP()">Send OTP</button>
+    </div>
+    <div id="phoneOtpStatus" class="text-success small mt-1"></div>
+  </div>
+
+  <div id="recaptcha-container" class="mb-2"></div>
+
+  <!-- Phone OTP -->
+  <div class="mb-3" id="otpContainer" style="display: none;">
+    <label class="form-label">Enter OTP</label>
+    <input type="text" class="form-control" id="otpInput" placeholder="6-digit OTP">
+    <button type="button" class="btn btn-success btn-sm mt-2" onclick="verifyOTP()">Verify</button>
+  </div>
+
+  <!-- Document Upload -->
+  <div class="mb-3">
+    <label class="form-label">Islamic Verification Document</label>
+    <input type="file" class="form-control" name="document" id="document" required>
+  </div>
+
+  <!-- References -->
+  <div class="mb-3">
+    <label class="form-label">Islamic References</label>
+    <textarea class="form-control" name="Baitulmaal[references]" required></textarea>
+  </div>
+
+  <!-- Checkbox -->
+  <div class="form-check mb-3">
+    <input class="form-check-input" type="checkbox" id="checkDefault" required>
+    <label class="form-check-label" for="checkDefault">
+      We confirm our organization follows Islamic principles and avoids prohibited transactions.
+    </label>
+  </div>
+
+  <input type="hidden" name="Baitulmaal[phoneVerified]" id="phoneVerified" value="false">
+  <input type="hidden" name="Baitulmaal[emailVerified]" id="emailVerified" value="false">
+
+  <button type="submit" class="btn btn-warning w-100" id="submitBtn" disabled>Submit</button>
+</form>
+
+    </div>
+
+    <div class="col-md-6 d-flex align-items-center">
+      <div class="bg-light p-4 rounded shadow-sm w-100 text-center">
+        <h4 class="text-success fw-bold mb-3">“The example of those who spend their wealth in the Way of Allah...”</h4>
+        <p class="text-muted fst-italic">"…is like a seed of grain that sprouts seven ears; in every ear there are a hundred grains." — Surah Al-Baqarah [2:261]</p>
+        <hr>
+        <p class="text-dark">Let your organization be a means of mercy for the Ummah. Register now and be part of a trusted and transparent charity network.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Firebase SDKs -->
+<!-- Dependencies -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://unpkg.com/webcam-easy/dist/webcam-easy.min.js"></script>
+
+<script>
+  // Firebase
+  firebase.initializeApp({
+    apiKey: "AIzaSyC3g5nQaPHRkVoBxlwjU18roxga4YejTWM",
+    authDomain: "baitulmaaal-88b83.firebaseapp.com",
+    projectId: "baitulmaaal-88b83",
+    storageBucket: "baitulmaaal-88b83.appspot.com",
+    messagingSenderId: "673162923319",
+    appId: "1:673162923319:web:523700704c423a4db89eb2"
+  });
+  const auth = firebase.auth();
+</script>
+
+<script>
+  // ReCAPTCHA
+  window.onload = () => {
+    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+      size: 'normal',
+      callback: response => sendOTP(),
+      'expired-callback': () => console.warn("reCAPTCHA expired")
+    });
+    recaptchaVerifier.render();
+  };
+
+  function sendOTP() {
+    const number = document.getElementById("phoneNumber").value.trim();
+    if (!/^\d{10}$/.test(number)) return alert("Enter valid 10-digit phone");
+    const appVerifier = window.recaptchaVerifier;
+    firebase.auth().signInWithPhoneNumber("+91" + number, appVerifier)
+      .then(confirmationResult => {
+        window.confirmationResult = confirmationResult;
+        document.getElementById("otpContainer").style.display = "block";
+        document.getElementById("phoneOtpStatus").innerText = "OTP sent to +91" + number;
+      })
+      .catch(error => {
+        document.getElementById("phoneVerified").value = "false";
+        alert("OTP Error: " + error.message);
+      });
+  }
+
+  function verifyOTP() {
+    const code = document.getElementById("otpInput").value;
+    if (code.length < 6) return alert("Enter full OTP");
+    window.confirmationResult.confirm(code)
+      .then(() => {
+        document.getElementById("phoneVerified").value = "true";
+        document.getElementById("phoneOtpStatus").innerText = "Phone verified ✔️";
+        enableSubmitIfReady();
+      })
+      .catch(() => alert("Invalid OTP"));
+  }
+
+  // Email OTP
+  let serverOtp = "";
+  async function sendEmailOTP() {
+    const email = document.getElementById("emailInput").value;
+    if (!email) return alert("Enter email first");
+    const res = await fetch("/home/send-otp", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email })
+    });
+    const data = await res.json();
+    if (data.success) {
+      serverOtp = data.otp;
+      document.getElementById("emailOtpStatus").innerText = "OTP sent to email";
+      document.getElementById("otpBox").style.display = "block";
+    } else {
+      document.getElementById("emailOtpStatus").innerText = "Error sending OTP";
+    }
+  }
+
+  document.getElementById("emailOtpInput").addEventListener("input", () => {
+    const inputOtp = document.getElementById("emailOtpInput").value;
+    if (inputOtp === serverOtp) {
+      document.getElementById("emailVerified").value = "true";
+      document.getElementById("emailOtpStatus").innerText = "Email verified ✅";
+      enableSubmitIfReady();
+    } else {
+      document.getElementById("emailVerified").value = "false";
+      document.getElementById("emailOtpStatus").innerText = "Incorrect OTP";
+    }
+  });
+
+  // Webcam
+  const webcamElement = document.getElementById("webcam");
+  const canvasElement = document.getElementById("canvas");
+  const capturedImage = document.getElementById("capturedImage");
+  const webcam = new Webcam(webcamElement, 'user', canvasElement);
+
+  async function startWebcam() {
+    await webcam.start();
+    document.getElementById("cameraContainer").style.display = "block";
+  }
+
+  function capturePhoto() {
+  const picture = webcam.snap();
+
+  const img = new Image();
+  img.src = picture;
+
+  img.onload = () => {
+    const canvas = document.createElement("canvas");
+    const maxWidth = 400; // Limit size
+    const scale = maxWidth / img.width;
+
+    canvas.width = maxWidth;
+    canvas.height = img.height * scale;
+
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+    const compressed = canvas.toDataURL("image/jpeg", 0.6); // Compress quality to 60%
+    document.getElementById("capturedImage").src = compressed;
+    document.getElementById("capturedImage").style.display = "block";
+    document.getElementById("liveWithAadhaarData").value = compressed;
+  };
+}
+
+
+  function stopWebcam() {
+    webcam.stop();
+    document.getElementById("cameraContainer").style.display = "none";
+  }
+
+  // Enable submit
+  function enableSubmitIfReady() {
+    const phoneVerified = document.getElementById("phoneVerified").value === "true";
+    const emailVerified = document.getElementById("emailVerified").value === "true";
+    const aadhaarCard = document.getElementById("aadhaarCard").files.length > 0;
+    const documentFile = document.getElementById("document").files.length > 0;
+    const liveData = document.getElementById("liveWithAadhaarData").value.trim() !== "";
+
+    document.getElementById("submitBtn").disabled = !(phoneVerified && emailVerified && aadhaarCard && documentFile && liveData);
+  }
+
+  // Final form validation before submit
+  document.getElementById("baitulmaalForm").addEventListener("submit", function (e) {
+    const allOkay = document.getElementById("submitBtn").disabled === false;
+    if (!allOkay) {
+      e.preventDefault();
+      alert("Please complete all verification steps before submitting.");
+    }
+  });
+
+  // Monitor inputs for live submit button toggle
+  ["aadhaarCard", "document", "emailOtpInput", "otpInput"].forEach(id => {
+    document.getElementById(id).addEventListener("input", enableSubmitIfReady);
+    document.getElementById(id).addEventListener("change", enableSubmitIfReady);
+  });
+</script>

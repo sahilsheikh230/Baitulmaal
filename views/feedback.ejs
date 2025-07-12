@@ -1,0 +1,25 @@
+<% layout("layouts/boilerplate") -%>
+
+<div class="container mt-5">
+  <h2 class="text-info mb-4"><i class="fas fa-comment-dots me-2"></i>Feedback</h2>
+  <p class="text-muted">We value your input. Please share your thoughts below.</p>
+
+  <form action="/feedback" method="POST" class="mt-4">
+    <div class="mb-3">
+      <label for="name" class="form-label">Your Name</label>
+      <input type="text" name="name" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+      <label for="email" class="form-label">Your Email</label>
+      <input type="email" name="email" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+      <label for="feedback" class="form-label">Your Feedback</label>
+      <textarea name="feedback" class="form-control" rows="5" required></textarea>
+    </div>
+
+    <button class="btn btn-primary">Submit Feedback</button>
+  </form>
+</div>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Submitted Reports</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container mt-5">
+    <h3 class="mb-4"><i class="fas fa-file-alt me-2"></i> Submitted Reports</h3>
+
+    <% if (reports.length === 0) { %>
+      <div class="alert alert-info">No reports submitted yet.</div>
+    <% } else { %>
+      <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+          <tr>
+            <th>#</th>
+            <th>Baitulmaal</th>
+            <th>Message</th>
+            <th>Date</th>
+            <th>Submitted By</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% reports.forEach((report, index) => { %>
+            <tr>
+              <td><%= index + 1 %></td>
+              <td><%= report.baitulmaal?.name || "N/A" %></td>
+              <td><%= report.message %></td>
+              <td><%= report.createdAt.toLocaleString() %></td>
+              <td><%= report.submittedBy?.username || "Unknown" %></td>
+              <td>
+                <button class="btn btn-outline-primary btn-sm" onclick="showReply('<%= report._id %>', '<%= report.baitulmaal._id %>')">
+                  Reply
+                </button>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } %>
+
+    <!-- Reply Form -->
+    <div id="replyFormContainer" class="mt-4" style="display: none;">
+      <form method="POST" id="replyForm">
+        <label class="form-label">Your Reply:</label>
+        <textarea name="Report[adminReply]" id="replyMessage" class="form-control mb-2" required minlength="20" placeholder="Reply should be at least 20 characters..."></textarea>
+        <button type="submit" class="btn btn-warning">Send Reply</button>
+        <button type="button" class="btn btn-secondary ms-2" onclick="hideReply()">Cancel</button>
+      </form>
+    </div>
+
+    <a href="/home/admindashboard" class="btn btn-outline-secondary mt-4">
+      <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
+    </a>
+  </div>
+
+  <script>
+    function showReply(reportId, baitulmaalId) {
+      const form = document.getElementById('replyForm');
+      form.action = `/admin/reply/${reportId}/${baitulmaalId}`;
+      document.getElementById('replyFormContainer').style.display = 'block';
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+
+    function hideReply() {
+      document.getElementById('replyFormContainer').style.display = 'none';
+      document.getElementById('replyMessage').value = '';
+    }
+  </script>
+</body>
+</html>

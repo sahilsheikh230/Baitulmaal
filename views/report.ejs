@@ -1,0 +1,49 @@
+<% layout('/layouts/boilerplate.ejs') -%>
+<h2>Welcome <%=user.username%></h2>
+<% if (baitulmaal.isverified) { %>
+  <div class="baitulmaal-box baitulmaal-entry mt-3 p-3 border rounded shadow-sm">
+    <div class="d-flex justify-content-between align-items-start">
+      <div>
+        <h5><i class="fas fa-mosque me-1"></i> <%= baitulmaal.name %></h5>
+        <p class="address"><i class="fas fa-map-marker-alt me-1"></i> <%= baitulmaal.address %></p>
+        <p><i class="fas fa-envelope me-1"></i> <%= baitulmaal.email %></p>
+        <p><i class="fas fa-phone me-1"></i> +91 <%= baitulmaal.phone %></p>
+        <p class="references"><strong>Islamic References:</strong> <%= baitulmaal.references %></p>
+      </div>
+    </div>
+
+    
+    <form action="/home/reportbaitulmaal/<%= baitulmaal._id %>/<%=user._id%>" class="mt-4" id="reportform" method="POST">
+      <div class="mb-3">
+        <label class="form-label" for="report">Write Reason For Report:</label>
+        <textarea 
+          id="reportarea" 
+          class="form-control" 
+          name="Review[message]" 
+          placeholder="Report should be more than 20 characters" 
+          rows="3"
+          required></textarea>
+      </div>
+
+      <button class="btn btn-outline-warning mt-2" type="submit" id="reportbtn">
+        Submit Report
+      </button>
+    </form>
+  </div>
+<% } %>
+
+<script>
+  document.querySelector("#reportform").addEventListener("submit", function (e) {
+    const reportText = document.querySelector("#reportarea").value.trim();
+
+    if (reportText.length < 20) {
+      e.preventDefault();
+      alert("Report must be at least 20 characters.");
+      return;
+    }
+
+    if (!confirm("Are you sure you want to submit this report?")) {
+      e.preventDefault();
+    }
+  });
+</script>

@@ -1,0 +1,85 @@
+<!-- Bootstrap CSS -->
+ <style>
+
+
+
+@media (max-width: 991.98px) {
+  .navbar-nav  {
+    margin-bottom: 10px;
+    background-color: white;
+   
+  }
+
+  .baitulmaal-btn,
+  .donate {
+
+    text-align: center;
+  }
+
+  .donate {
+    margin-left: 0 !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .baitulmaal-btn,
+  .donate {
+    width: auto;
+  }
+}
+
+ </style>
+<div class=" yellow navbar navbar-expand-sm navbar-light bg-warning shadow-sm">
+
+</div>
+<nav class="navbar white navbar-expand-lg navbar-light bg-white shadow-sm">
+  <div class="container">
+    <!-- Logo -->
+    <a class="navbar-brand" href="/home">
+      <img src="https://baitulmaal.org/wp-content/uploads/2023/05/baitulmaal-black-white-WEB.png" height="70" alt="Baitulmaal Logo" height="40">
+    </a>
+
+    <!-- Toggler -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Nav Links -->
+    <div class= "collapse navbar-collapse justify-content-end" id="navbarNav">
+  <ul  class="navbar-nav align-items-lg-center text-center text-lg-start">
+   <% if (typeof currentBaitulmaal !== 'undefined' && currentBaitulmaal ) { %>
+  <a href="/home/baitulmaaldashboard/<%=currentBaitulmaal._id%>" class="btn btn-outline-dark rounded-pill px-4 me-3" style="background-color: #ffc107; border-color: #ffc107; color: #000;">
+    <i class="fas fa-check-circle me-2"></i>My Baitulmaal
+  </a>
+<% } %>
+
+
+
+        <li class="nav-item">
+          <a class="nav-link" href="/home">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/help">How You help</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/getinvolved">Get Involved</a>
+        </li>
+     
+
+
+  
+   
+      
+     
+        <li class="nav-item">
+          <a class=" btn  donate px-3 ms-lg-3" href="/home/login">Donate</a>
+        </li>
+  
+      </ul>
+    </div>
+  </div>
+</nav>
+

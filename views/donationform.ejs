@@ -1,0 +1,79 @@
+<% layout("/layouts/boilerplate.ejs") -%>
+<div class="container my-5">
+  <h3>Donate to <%= baitulmaal.name %></h3>
+  <p><strong>Address:</strong> <%= baitulmaal.address %></p>
+  <p><strong>Email:</strong> <%= baitulmaal.email %></p>
+
+  <form id="donationForm">
+    <input type="hidden" id="baitulmaalId" value="<%= baitulmaal._id %>">
+    <div class="mb-3">
+      <label for="amount" class="form-label">Amount (INR)</label>
+      <input type="number" id="amount" class="form-control" required min="1" placeholder="Enter amount">
+    </div>
+    <button type="submit" class="btn btn-success">Donate with Razorpay</button>
+  </form>
+</div>
+<div class="offset-3"><a href="/home/donordashboard" class="btn btn-outline-dark">Back to Dashboard</a></div>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+  document.getElementById("donationForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const amount = document.getElementById("amount").value;
+    const baitulmaalId = document.getElementById("baitulmaalId").value;
+
+    const res = await fetch(`/home/donate/${baitulmaalId}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount })
+    });
+
+    const data = await res.json();
+
+    if (!data.success) {
+      alert("Error creating Razorpay order");
+      return;
+    }
+
+    const options = {
+      key: "<%= razorpayKey %>",
+      amount: data.order.amount,
+      currency: "INR",
+      name: "Baitulmaal Donation",
+      description: "Donation",
+      order_id: data.order.id,
+
+  
+      handler: async function (response) {
+        alert("Donation successful! Payment ID: " + response.razorpay_payment_id);
+
+        const saveRes = await fetch("/home/donation/success", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            paymentId: response.razorpay_payment_id,
+            amount: amount,
+            baitulmaalId: baitulmaalId
+          })
+        });
+
+        const result = await saveRes.json();
+        if (result.success) {
+          window.location.href = "/home/donordashboard";
+        } else {
+          alert("Payment was successful, but saving donation failed.");
+        }
+      },
+
+      prefill: {
+        name: "<%= currentUser.username %>",
+        email: "<%= currentUser.email %>"
+      }
+    };
+
+    const rzp = new Razorpay(options);
+    rzp.open();
+  });
+</script>

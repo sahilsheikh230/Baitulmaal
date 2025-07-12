@@ -1,0 +1,73 @@
+.footer {
+ background-color: rgba(0, 0, 0, 0.5);
+
+
+  color: white;
+  /* REMOVE position fixed */
+  width: 100%;
+  padding: 0.5rem 0;
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.footer a {
+  color:white;
+  margin: 0 0.5rem;
+  text-decoration: none;
+}
+.footer .info {
+  margin-top: 0.5rem;
+}
+.footer .copyright {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+.info a{
+    color:white;
+}
+.info a:hover{
+    text-decoration: underline;
+}
+.footer a :hover{
+    box-shadow: 5px;
+    border-radius:50%;
+   
+}
+.navbar{
+    background-color:#343a401b;
+  
+    
+    z-index: 1030;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+/* register styling*/
+.white{
+height:80px;
+}
+.yellow{
+  height:40px;
+}
+.donate{
+  background-color: #DC3545;
+  color:white;
+  font-weight: 900;
+}
+.donate:hover{
+  background-color:yellow;
+  color:black;
+}
+.containerregister
+{
+   max-width: 1000px;
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+}

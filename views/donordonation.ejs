@@ -1,0 +1,36 @@
+<% layout("/layouts/boilerplate.ejs") -%>
+
+<div class="container mt-5">
+  <h2 class="mb-4">My Donations</h2>
+
+  <% if (donations.length === 0) { %>
+    <div class="alert alert-info">You haven't made any donations yet.</div>
+  <% } else { %>
+    <table class="table table-striped table-bordered">
+      <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th>Baitulmaal</th>
+          <th>Amount (₹)</th>
+          <th>Payment ID</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% donations.forEach((donation, index) => { %>
+          <tr>
+            <td><%= index + 1 %></td>
+            <td><%= donation.baitulmaal?.name || "N/A" %></td>
+            <td><%= donation.amount %></td>
+            <td><%= donation.paymentId %></td>
+            <td><%= new Date(donation.createdAt).toLocaleString() %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+
+  <a href="/home/donordashboard" class="btn btn-outline-secondary mt-3">
+    <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
+  </a>
+</div>

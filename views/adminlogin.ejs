@@ -1,0 +1,24 @@
+<% layout('/layouts/boilerplate.ejs') -%>
+
+<h2 style="text-align: center; margin-top: 10px;">Admin Login</h2>
+<form action="/admin/login" method="post">
+    <div class=" offset-3 w-50 border shadow-sm rounded p-3">
+  <div class="main offset-4 mt-3 col-4">
+    <label for="exampleInputEmail1" class="form-label">Username</label>
+    <input type="text" class="form-control" id="exampleInputEmail1" name="username" >
+  </div>
+  <div class="main offset-4 col-4 mt-3">
+  
+    <label for="exampleInputPassword1" class="form-label">Password</label>
+    <input type="password" class="form-control" id="exampleInputPassword1" name="password">
+  </div>
+  <div class="main offset-4 col-4 mt-3">
+    <label class="form" for="exampleCheck1">Phone</label>
+    <input  class="form-control" id="exampleCheck1"  placeholder="+91XXX" >
+    
+  </div>
+  <div class="main offset-4 mt-3">
+  <button type="submit" class="btn btn-outline-dark">Submit</button>
+  </div>
+  </div>
+</form>

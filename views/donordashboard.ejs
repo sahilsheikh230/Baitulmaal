@@ -1,0 +1,163 @@
+<% layout("/layouts/boilerplate.ejs") -%>
+<title>Donor Dashboard - Baitulmaal</title>
+
+<style>
+  .dashboard-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+
+  .dashboard-header .welcome {
+    font-size: 1.5rem;
+    color: #1a472a;
+    font-weight: 600;
+  }
+
+  .search-input {
+    max-width: 300px;
+  }
+
+  .logout-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 6px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+  }
+
+  .logout-btn:hover {
+    background-color: #c82333;
+  }
+
+  .baitulmaal-box {
+    background: #fdfdfd;
+    border-left: 6px solid #1a472a;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+
+  .baitulmaal-box h5 {
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #1a472a;
+  }
+
+  .baitulmaal-box p {
+    margin: 4px 0;
+    color: #555;
+  }
+
+  .baitulmaal-box .references {
+    font-size: 0.95rem;
+    color: #666;
+  }
+
+  .btn-donate {
+    background-color: #1a472a;
+    color: white;
+    font-weight: bold;
+    border: none;
+    padding: 8px 20px;
+    margin-top: 10px;
+  }
+
+  .btn-donate:hover {
+    background-color: #145e36;
+  }
+
+  .quote-box {
+    background-color: #f3f6f4;
+    border-left: 5px solid #d4af37;
+    padding: 15px;
+    font-style: italic;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    color: #1a472a;
+  }
+
+  .quote-box small {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.9rem;
+    color: #777;
+  }
+</style>
+
+<body>
+  <div class="container my-5">
+ 
+    <div class="dashboard-header">
+      <div class="welcome">
+        Welcome, <%= currentUser.username || currentUser.email %>
+      </div>
+      <input type="text" id="searchInput" class="form-control search-input" placeholder="Search Baitulmaal with their address...">
+      <a href="/home/donordashboard/reports/<%=currentUser._id%>" class="btn btn-outline-danger">
+   <i class="fas fa-flag"></i> My Reports
+</a>
+     
+     
+      <a href="/home/logout" class="btn btn-outline-dark">
+  <i class="fas fa-sign-out-alt me-1"></i> Logout
+</a>
+
+    </div>
+
+
+    <div class="quote-box">
+      “The believer’s shade on the Day of Resurrection will be his charity.”
+      <small>— Prophet Muhammad ﷺ (Tirmidhi)</small>
+    </div>
+
+    <div class="quote-box">
+      “Charity does not decrease wealth.” 
+      <small>— Sahih Muslim</small>
+    </div>
+
+
+    <% baitulmaals.forEach(b => { %>
+  <% if (b.isverified) { %>
+    <div class="baitulmaal-box baitulmaal-entry mb-3 p-3 border rounded shadow-sm">
+      <div class="d-flex justify-content-between align-items-start">
+        <div>
+          <h5><i class="fas fa-mosque me-1"></i> <%= b.name %></h5>
+          <p class="address"><i class="fas fa-map-marker-alt me-1"></i> <%= b.address %></p>
+          <p><i class="fas fa-envelope me-1"></i> <%= b.email %></p>
+          <p><i class="fas fa-phone me-1"></i> +91 <%= b.phone %></p>
+          <p class="references"><strong>Islamic References:</strong> <%= b.references %></p>
+          <a href="/home/donate/<%=b._id%>" class="btn btn-success btn-sm">Donate Now</a>
+          <a href="/home/viewdonations/<%=b._id%>"class="btn btn-success btn-sm">View Donations</a>
+        </div>
+        
+       
+        <form action="/home/reportbaitulmaal/<%= b._id %>/<%=currentUser._id%>" method="get" onsubmit="return confirm('Are you sure you want to report this Baitulmaal?');">
+          <button type="submit" class="btn btn-outline-danger btn-sm" title="Report">
+            <i class="fas fa-flag"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  <% } %>
+<% }) %>
+
+  </div>
+
+  <script>
+   
+    const searchInput = document.getElementById('searchInput');
+    const baitulmaalEntries = document.querySelectorAll('.baitulmaal-entry');
+
+    searchInput.addEventListener('input', function () {
+      const term = this.value.toLowerCase();
+      baitulmaalEntries.forEach(entry => {
+        const address = entry.querySelector('.address').innerText.toLowerCase();
+        entry.style.display = address.includes(term) ? 'block' : 'none';
+      });
+    });
+  </script>
+</body>

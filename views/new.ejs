@@ -1,0 +1,37 @@
+
+<% layout("/layouts/boilerplate.ejs") -%>
+
+
+<form method="post" action="/home/newrequest">
+  <div class="mt-3 col-4 offset-4">
+    <label for="exampleInputEmail1" class="form-label">Title</label>
+    <input type="email" class="form-control" name="Request[title]" id="exampleInputEmail1" aria-describedby="emailHelp">
+    
+ 
+  </div>
+
+<div class="mt-3 col-4 offset-4">
+  <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+  <textarea class="form-control" id="exampleFormControlTextarea1" name="Request[description]"></textarea>
+</div>
+
+
+<div class="mt-3 col-4 offset-4">
+    <label for="exampleInputEmail1" class="form-label">Amount required</label>
+    <input type="email" class="form-control" name="Request[amount]" id="exampleInputEmail1" aria-describedby="emailHelp">
+    
+ 
+</div>
+
+
+
+
+
+
+
+
+ <button type="submit" class="btn btn-primary">Submit</button>
+
+
+
+</form>

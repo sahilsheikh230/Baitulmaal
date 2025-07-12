@@ -1,0 +1,50 @@
+<% layout('/layouts/boilerplate.ejs') -%>
+<style>
+  body {
+    background-image: url("https://images.pexels.com/photos/31330742/pexels-photo-31330742.jpeg?_gl=1*1fespg0*_ga*NTcwOTMyOC4xNzUxMDI0NzUy*_ga_8JE65Q40S6*czE3NTEwMjQ3NTEkbzEkZzEkdDE3NTEwMjQ4ODQkajUwJGwwJGgw");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    position: relative;
+  }
+
+  /* Overlay for contrast */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* adjust darkness here */
+    z-index: -1;
+  }
+
+  .container {
+    z-index: 1;
+    position: relative;
+    color: white;
+  }
+
+  .btn {
+    font-weight: 600;
+  }
+</style>
+<div class="container mt-5 py-5">
+  <div class="text-center">
+    <h1 class="display-4 fw-bold text-white">Welcome to Baitulmaal</h1>
+    <p class="lead text-light">A community-driven platform dedicated to kindness, support, and upliftment.</p>
+    <hr class="my-4 text-light" />
+
+  
+      <div class="mt-4">
+        <a href="/home/register" class="btn btn-warning me-4 px-4">Register Your Baitulmaal</a>
+      </div>
+      
+      <div class="mt-4">
+        <a href="/home/loginbaitulmaal" style="color:white;"     class="btn btn-outline-warning me-4 px-4">Login Your Baitulmaal</a>
+      </div>
+      
+  
+  </div>
+</div>
