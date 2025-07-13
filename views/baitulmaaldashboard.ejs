@@ -24,21 +24,6 @@
       <div class="col-md-8"><%= baitulmaal.references %></div>
     </div>
 
-    <% if (baitulmaal.document && baitulmaal.document.url) { %>
-      <div class="row mb-3">
-        <div class="col-md-4 fw-bold">Verification Document:</div>
-        <div class="col-md-8">
-          <a href="/<%= baitulmaal.document.url %>" target="_blank" class="btn btn-sm btn-outline-primary">
-            View Document
-          </a>
-        </div>
-      </div>
-    <% } else { %>
-      <div class="row mb-3">
-        <div class="col-md-4 fw-bold">Verification Document:</div>
-        <div class="col-md-8 text-muted">No document uploaded</div>
-      </div>
-    <% } %>
 
     <div class="text-center mt-4">
       <form action="/home/deletebaitulmaal/<%= baitulmaal._id %>?_method=DELETE" method="POST"

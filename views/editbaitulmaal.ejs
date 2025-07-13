@@ -1,17 +1,18 @@
 <% layout('/layouts/boilerplate.ejs') -%>
 
-<div class="container my-5">
+ <h3 class="mb-4 text-primary offset-3 mt-2">Edit Your Baitulmaal</h3>
+<div class="container  offset-2  rounded p-3">
   <div class="row">
-    <div class="col-md-6">
-      <h3 class="mb-4 text-primary">Edit Your Baitulmaal</h3>
+    <div class="col-md-8">
+     
       <form method="post" action="/home/editbaitulmaal/<%=baitulmaal._id%>?_method=PUT" enctype="multipart/form-data">
 
-        <div class="mb-3">
+        <div class="mb-3 offset-1">
           <label class="form-label">Organisation Name</label>
           <input type="text" class="form-control" name="Baitulmaal[name]" placeholder="e.g. Al-Falah Trust" value="<%=baitulmaal.name%>" required>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3 offset-1">
           <label class="form-label">Email Address</label>
         
             <input type="email" class="form-control" name="Baitulmaal[email]" id="emailInput"  value="<%=baitulmaal.email%>"   required>
@@ -19,30 +20,30 @@
         </div>
     
 
-        <div class="mb-3">
+        <div class="mb-3 offset-1">
           <label class="form-label">Full Address</label>
           <textarea class="form-control" name="Baitulmaal[address]" placeholder="Street, City, State, PIN" rows="3" value="<%=baitulmaal.address%>" required></textarea>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3 offset-1">
           <label class="form-label">Community Leader Phone</label>
             <input type="text" class="form-control" id="phoneNumber"  value="<%=baitulmaal.phone%>"   name="Baitulmaal[phone]" placeholder="Enter 10-digit Phone" pattern="[0-9]{10}" required>
           
         </div>
 
 
-        <div class="mb-3">
+        <div class="mb-3 offset-1">
           <label class="form-label">Islamic Verification Document</label>
-          <input type="file" class="form-control" name="document">
+          <input type="file" class="form-control" name="document" required>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3 offset-1">
           <label class="form-label">Islamic References</label>
           <textarea class="form-control" name="Baitulmaal[references]" placeholder="Imam, Scholar, Community Leader" rows="3" value="<%=baitulmaal.references%>" required></textarea>
         </div>
 
        
-        <button type="submit" class="btn btn-warning w-100" id="submitBtn" >Submit</button>
+        <button type="submit" class="btn btn-warning w-100 offset-1" id="submitBtn" >Submit</button>
 
       </form>
     </div>
